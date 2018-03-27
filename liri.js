@@ -31,7 +31,7 @@ if (which == "my-tweets"){
 if (which == "spotify-this-song"){
 		
 		//search "The Sign" by Ace of Base if no song was entered in the console
-		if(process.argv[3] === undefined){
+		if(input === undefined){
 			input = "The Sign Ace of Base";
 		}
 
@@ -39,20 +39,17 @@ if (which == "spotify-this-song"){
   			if (err) {
     				return console.log('Error occurred: ' + err);
   			}
- 			console.log("+++++++++++++++++++++++++++++++++++++");
 			console.log("Artist(s): " + data.tracks.items[0].album.artists[0].name);
 			console.log("Song: " + data.tracks.items[0].name);
 			console.log("Song link: " + data.tracks.items[0].album.artists[0].external_urls.spotify);
 			console.log("Album:  " + data.tracks.items[0].album.name);
-			console.log("+++++++++++++++++++++++++++++++++++++");
-
 		});
 } //end spotify
 
 if (which == "movie-this"){
 	
 	//search for "Mr Nobody" is no movie is entered into the console
-	if(process.argv[3] === undefined){
+	if(input === undefined){
 			input = "Mr. Nobody";
 		}
 
@@ -74,9 +71,6 @@ if (which == "movie-this"){
   			console.log('Actors: ', result.Actors);
   		}
    		 
-});
-	
- 
-
+});	
 } //end movie-this
 
