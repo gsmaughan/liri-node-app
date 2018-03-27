@@ -46,7 +46,7 @@ if (which == "do-what-it-says"){
 			input = dataArr[1];
 			song();
 		}
-		
+
 		//run movies() function if the random.txt first entry is 'movie-this'
 		else if(dataArr[0] == 'movie-this'){
 			//make the input the second element in the dataArr array (from the random.txt file)
@@ -63,13 +63,22 @@ function tweets(){
 	client.get('favorites/list', function(error, tweets, response) {
 
   			if(!error){
-  				for (var i = 0; i < tweets.length; i++){	
-  				console.log("Tweet: ", tweets[i].text, "Date tweeted:  ", tweets[i].created_at );  // The favorites.  
+  				for (var i = 0; i < tweets.length; i++){
+  				var arg1 = tweets[i].text;	
+  				var arg2 = tweets[i].created_at;
+  				console.log("Tweet: ", arg1, "Date tweeted:  ", arg2);  // The favorites.
+
+  				var arg = (arg1 + arg2);
+  				append(arg);
   			}
-			}else{
+			}
+			else{
 				console.log("error");
 
 			}
+
+
+
 	}); //end client.get
 } //end tweets()
 
@@ -90,6 +99,10 @@ function song(){
 			console.log("Song: " + data.tracks.items[0].name);
 			console.log("Song preview: " + data.tracks.items[0].preview_url);
 			console.log("Album:  " + data.tracks.items[0].album.name);
+
+			var arg = data.tracks.items[0].album.artists[0].name + data.tracks.items[0].name + data.tracks.items[0].preview_url + data.tracks.items[0].album.name; 
+			
+			append(arg);
 		});
 } //end song()
 
@@ -115,7 +128,26 @@ function movies(){
   			console.log('Language: ', result.Language);
   			console.log('Plot: ', result.Plot);
   			console.log('Actors: ', result.Actors);
+
+  			var arg = result.Title + result.Year + result.imdbRating + result.Ratings[1].Value + result.Country + result.Language + result.Plot + result.Actors;  
+  			append(arg);
   		}
    		 
 });	
 } //end movies()
+
+function append(arg){
+
+	fs.appendFile("log.txt", arg, function (err){
+
+		if(err){
+			console.log(err);
+		}
+
+		else{
+			console.log("Content added!");
+		}
+
+	});
+
+} //end append()
