@@ -1,5 +1,7 @@
 require("dotenv").config();
 
+var fs = require("fs");
+
 var keys = require("./keys.js");
 
 var Twitter = require("twitter");
@@ -15,7 +17,50 @@ var which = process.argv[2];
 var input = process.argv[3];
 
 if (which == "my-tweets"){
-		client.get('favorites/list', function(error, tweets, response) {
+		tweets();
+} //end if
+
+if (which == "spotify-this-song"){
+		song();
+		
+} //end spotify
+
+if (which == "movie-this"){
+		movies();
+	
+} //end movie-this
+
+if (which == "do-what-it-says"){
+
+	fs.readFile("random.txt", "utf8", function(error, data){
+
+		if (error){
+			return console.log(error);
+		} //end error
+
+		var dataArr = data.split(",");  //make an array from data info, split by the comma
+
+		//run the song() function if the random.txt first entry is 'spotify-this-song'
+		if(dataArr[0] == 'spotify-this-song'){
+			//make the input the second element in the dataArr array (from the random.txt file)
+			input = dataArr[1];
+			song();
+		}
+		
+		//run movies() function if the random.txt first entry is 'movie-this'
+		else if(dataArr[0] == 'movie-this'){
+			//make the input the second element in the dataArr array (from the random.txt file)
+			input = dataArr[1];
+			movies();
+		}
+
+
+	});// end .readFile
+
+}//end which
+
+function tweets(){
+	client.get('favorites/list', function(error, tweets, response) {
 
   			if(!error){
   				for (var i = 0; i < tweets.length; i++){	
@@ -26,11 +71,11 @@ if (which == "my-tweets"){
 
 			}
 	}); //end client.get
-} //end if
+} //end tweets()
 
-if (which == "spotify-this-song"){
-		
-		//search "The Sign" by Ace of Base if no song was entered in the console
+function song(){
+
+	//search "The Sign" by Ace of Base if no song was entered in the console
 		if(input === undefined){
 			input = "The Sign Ace of Base";
 		}
@@ -39,15 +84,17 @@ if (which == "spotify-this-song"){
   			if (err) {
     				return console.log('Error occurred: ' + err);
   			}
+  			
+  			console.log("_______________________________________________");
 			console.log("Artist(s): " + data.tracks.items[0].album.artists[0].name);
 			console.log("Song: " + data.tracks.items[0].name);
-			console.log("Song link: " + data.tracks.items[0].album.artists[0].external_urls.spotify);
+			console.log("Song preview: " + data.tracks.items[0].preview_url);
 			console.log("Album:  " + data.tracks.items[0].album.name);
 		});
-} //end spotify
+} //end song()
 
-if (which == "movie-this"){
-	
+function movies(){
+
 	//search for "Mr Nobody" is no movie is entered into the console
 	if(input === undefined){
 			input = "Mr. Nobody";
@@ -60,7 +107,6 @@ if (which == "movie-this"){
   		else{
   			// parse body so that we can use JSON
   			var result = JSON.parse(body);
-  			
   			console.log('Title: ', result.Title);
   			console.log('Year: ', result.Year);
   			console.log('IMDB rating: ', result.imdbRating);
@@ -72,5 +118,4 @@ if (which == "movie-this"){
   		}
    		 
 });	
-} //end movie-this
-
+} //end movies()
