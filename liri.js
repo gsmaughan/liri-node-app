@@ -66,9 +66,10 @@ function tweets(){
   				for (var i = 0; i < tweets.length; i++){
   				var arg1 = tweets[i].text;	
   				var arg2 = tweets[i].created_at;
-  				console.log("Tweet: ", arg1, "Date tweeted:  ", arg2);  // The favorites.
+  				console.log("Tweet: ", arg1); 
+  				console.log("Date tweeted:  ", arg2);  // The favorites.
 
-  				var arg = (arg1 + arg2);
+  				var arg = (arg1 +"\n" + arg2);
   				append(arg);
   			}
 			}
@@ -100,7 +101,7 @@ function song(){
 			console.log("Song preview: " + data.tracks.items[0].preview_url);
 			console.log("Album:  " + data.tracks.items[0].album.name);
 
-			var arg = data.tracks.items[0].album.artists[0].name + data.tracks.items[0].name + data.tracks.items[0].preview_url + data.tracks.items[0].album.name; 
+			var arg = data.tracks.items[0].album.artists[0].name +"\n" + data.tracks.items[0].name +"\n" + data.tracks.items[0].preview_url +"\n" + data.tracks.items[0].album.name; 
 			
 			append(arg);
 		});
@@ -129,7 +130,7 @@ function movies(){
   			console.log('Plot: ', result.Plot);
   			console.log('Actors: ', result.Actors);
 
-  			var arg = result.Title + result.Year + result.imdbRating + result.Ratings[1].Value + result.Country + result.Language + result.Plot + result.Actors;  
+  			var arg = result.Title +"\n" + result.Year +"\n" + result.imdbRating +"\n" + result.Ratings[1].Value +"\n" + result.Country +"\n" + result.Language +"\n" + result.Plot +"\n" + result.Actors;  
   			append(arg);
   		}
    		 
@@ -144,10 +145,7 @@ function append(arg){
 			console.log(err);
 		}
 
-		else{
-			console.log("Content added!");
-		}
-
+		
 	});
 
 } //end append()
